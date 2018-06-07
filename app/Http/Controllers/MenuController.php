@@ -51,7 +51,13 @@ class MenuController extends Controller
         ]);
 
         if ($validator->fails()) {
+            if($r->tipe_menu == 'makanan'){
+                Session::flash('makanan',true);
+            }elseif($r->tipe_menu == 'minuman'){
+                Session::flash('minuman',true);
+            }
             return redirect()->back()
+                            ->with('err',true)
                             ->withErrors($validator)
                             ->withInput();
             // return $validator;
@@ -114,7 +120,7 @@ class MenuController extends Controller
 
         $validator = Validator::make($r->all(), [
             'nama_menu'         => 'required|min:3',
-            'deskripsi_menu'    => 'required|min:10',
+            'deskripsi_menu'    => 'required',
             'harga_menu'        => 'required',
             'stock_menu'        => 'required|min:1',
         ]);
@@ -162,7 +168,7 @@ class MenuController extends Controller
         }else{
             Session::flash('delete-denied',true);
         }
-        
+
         return Redirect::back();
     }
 
